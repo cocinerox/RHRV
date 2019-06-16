@@ -79,7 +79,7 @@ PoincarePlot = function(HRVData, indexNonLinearAnalysis = length(HRVData$NonLine
     VerboseMessage(HRVData$Verbose,   
                    paste("Creating Poincare Plot with time lag = ",timeLag))
     # get 2D-phase space
-    takens = buildTakens(rrSeries, embedding.dim = 2, time.lag = timeLag)
+    takens = na.omit(buildTakens(rrSeries, embedding.dim = 2, time.lag = timeLag))
     mu = c(mean(takens[,1]), mean(takens[,2]))
     # Compute the ellipse sorrounding the points: a will denote the largest 
     # axis of the ellipse and b the shortest one.
@@ -123,15 +123,15 @@ PoincarePlot = function(HRVData, indexNonLinearAnalysis = length(HRVData$NonLine
 computeSD <- function(timeSeries, timeLag, confidenceEstimation, confidence){
   # compute parameters
   if (confidenceEstimation) {
-    takens = buildTakens(time.series = timeSeries,
+    takens = na.omit(buildTakens(time.series = timeSeries,
                          embedding.dim = 2,
-                         time.lag = timeLag)
+                         time.lag = timeLag))
     SD = confidenceEllipse(x = takens[, 1],
                            y = takens[, 2],
                            confidence = confidence)
   }else{
-    sd1 = sd(diff(timeSeries)) / sqrt(2)
-    sd2 = sqrt(2 * var(timeSeries) - sd1 ^ 2)  
+    sd1 = sd(diff(timeSeries), na.rm = TRUE) / sqrt(2)
+    sd2 = sqrt(2 * var(timeSeries, na.rm = TRUE) - sd1 ^ 2)  
     directions = matrix(c(1, 1, -1, 1) / sqrt(2), 2, byrow = FALSE)
     # return values in decreasing order
     SD = list(sd = c(sd2, sd1), directions = directions)
