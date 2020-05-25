@@ -87,8 +87,8 @@ PoincarePlot = function(HRVData, indexNonLinearAnalysis = length(HRVData$NonLine
                           aVector = sd2Direction, bVector = sd1Direction,
                           mu = mu)
     # Compute end-points for the SD1 and SD2 arrows 
-    SD1_end = mu + sd2 * cv * sd2Direction
-    SD2_end = mu + sd1 * cv * sd1Direction
+    SD1_end = mu + sd1 * cv * sd1Direction
+    SD2_end = mu + sd2 * cv * sd2Direction
     # compute xlim and ylim if necessary
     if (is.null(xlim)) {
       xlim = range(c(takens[,1], ellipse[,1], SD1_end[[1]], SD2_end[[1]]))
@@ -103,12 +103,12 @@ PoincarePlot = function(HRVData, indexNonLinearAnalysis = length(HRVData$NonLine
     lines(ellipse, col = "black", lwd = 5)  
     # plot SD1 
     arrows(x0 = mu[[1]], y0 = mu[[2]], x1 = SD1_end[[1]], y1 = SD1_end[[2]],
-           angle = 15, col = 3, code = 2, lty = 1, lwd = 2)
+           angle = 15, col = 4, code = 2, lty = 1, lwd = 2)
     # plot SD2
     arrows(x0 = mu[[1]], y0 = mu[[2]], x1 = SD2_end[[1]], y1 = SD2_end[[2]],
-           angle = 15, col = 4, code = 2, lty = 1, lwd = 2)
+           angle = 15, col = 3, code = 2, lty = 1, lwd = 2)
     legend("bottomright", c("SD1","SD2"),  bty = "n",
-           col = c(3,4), lty = c(1,1), lwd = c(2,2))
+           col = c(4,3), lty = c(1,1), lwd = c(2,2))
   }
   
   HRVData$NonLinearAnalysis[[indexNonLinearAnalysis]]$PoincarePlot$SD1 = sd1
